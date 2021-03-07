@@ -10,7 +10,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>less2_SpringBeans</module>
-        <module>less3_SpringMVC</module>
     </modules>
 
 
