@@ -42,11 +42,12 @@ public class ProductRepository {
     }
 
     public void deleteProductById(Long id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                products.remove(product);
-                return;
-            }
-        }
+        products.removeIf(p -> p.getId().equals(id));
+//        for (Product product : products) {
+//            if (product.getId().equals(id)) {
+//                products.remove(product);
+//                return;
+//            }
+//        }
     }
 }
