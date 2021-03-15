@@ -12,6 +12,7 @@
         <module>less2_SpringBeans</module>
         <module>less3_SpringMVC</module>
         <module>less4_SpringBoot</module>
+        <module>less5_Hibernate1</module>
     </modules>
 
 
