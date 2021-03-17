@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductRepository {
@@ -25,13 +26,14 @@ public class ProductRepository {
         return Collections.unmodifiableList(products);
     }
 
-    public Product getProductById(long id) throws IllegalArgumentException {
-        for (Product product : products) {
-            if (id == product.getId()) {
-                return product;
+    public Optional<Product> getProductById(long id) throws IllegalArgumentException {
+        Optional<Product> product = Optional.empty();
+        for (Product p : products) {
+            if (id == p.getId()) {
+                product = Optional.of(p);
             }
         }
-        throw new IllegalArgumentException("Product not found by id");
+        return product;
     }
 
     public void addProduct(Product product) {
@@ -39,6 +41,7 @@ public class ProductRepository {
     }
 
     public void removeProductById(long id) {
-        products.remove(getProductById(id));
+        Optional<Product> product = getProductById(id);
+        product.ifPresent(p -> products.remove(p));
     }
 }

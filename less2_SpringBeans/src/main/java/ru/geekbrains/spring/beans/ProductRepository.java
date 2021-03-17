@@ -6,11 +6,11 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductRepository {
     private List<Product> products;
-    private long maxId;
 
     @PostConstruct
     public void init() {
@@ -20,24 +20,20 @@ public class ProductRepository {
         products.add(new Product(3L, "Fridge", 600.));
         products.add(new Product(4L, "Hoover", 49.90));
         products.add(new Product(5L, "PlayStation 5", 399.90));
-        maxId = products.size();
     }
 
     public List<Product> findAllProducts() {
         return Collections.unmodifiableList(products);
     }
 
-    public Product findProduct(long id) {
-        for (Product product : products) {
-            if (id == product.getId()) {
-                return product;
+    public Optional<Product> findProduct(long id) {
+        Optional<Product> product = Optional.empty();
+        for (Product p : products) {
+            if (id == p.getId()) {
+                product = Optional.of(p);
             }
         }
-        return null;
-    }
-
-    public long getMaxId() {
-        return maxId;
+        return product;
     }
 
     public void printProductRepository() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Scope("prototype")
@@ -25,18 +26,30 @@ public class Cart {
     }
 
     public void addProductToCart(long id) {
-        products.add(productRepository.findProduct(id));
+        Optional<Product> product = productRepository.findProduct(id);
+        if (product.isPresent()) {
+            products.add(product.get());
+            System.out.println("Товар добавлен в корзину");
+        } else {
+            System.out.println("Товар с указанным id не найден");
+        }
     }
 
     public void removeProductInTheCart(long id) {
-        products.remove(productRepository.findProduct(id));
+        Optional<Product> product = products.stream().filter(p -> p.getId() == id).findFirst();
+        if (product.isPresent()) {
+            products.remove(product.get());
+            System.out.println("Товар удален из корзины");
+        } else {
+            System.out.println("Товар с указанным id не найден");
+        }
     }
 
     public void printCart() {
         if (products.isEmpty()) {
-            System.out.println("Cart is empty");
+            System.out.println("Корзина пуста");
         } else {
-            System.out.println("Cart composition:");
+            System.out.println("Состав корзины:");
             for (Product p : products) {
                 System.out.println(p.toString());
             }

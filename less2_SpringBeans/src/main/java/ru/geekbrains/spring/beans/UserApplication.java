@@ -23,28 +23,30 @@ public class UserApplication {
                 "DELETE - удаление товара из корзины. Пример запроса - \"DELETE id\", где id - номер товара в списке доступных товаров (см. VIEW);\n" +
                 "SHOW - показ содержимого корзины. Пример запроса - \"SHOW\".");
         String line;
-        long maxId = productRepository.getMaxId();
         while (!(line = reader.readLine()).equals("exit")) {
             String[] strings = line.split(" ");
             if (strings.length > 2) {
                 System.out.println("Команда не распознана. Проверьте Ваш запрос");
                 continue;
             }
-            if (strings[0].toUpperCase().equals("VIEW")) {
+            String command = strings[0].toUpperCase();
+            if (command.equals("VIEW")) {
                 productRepository.printProductRepository();
-            } else if (strings[0].toUpperCase().equals(CommandCartList.ADD.toString())) {
+            } else if (command.equals(CommandCartList.ADD.toString())) {
                 try {
-                    cart.addProductToCart(checkId(strings[1], maxId));
-                    System.out.println("Товар добавлен в корзину");
-                } catch (NumberFormatException ignored) {
+                    long id = Long.parseLong(strings[1]);
+                    cart.addProductToCart(id);
+                } catch (NumberFormatException e) {
+                    System.out.println("id не найден. Проверьте Ваш запрос");
                 }
-            } else if (strings[0].toUpperCase().equals(CommandCartList.DELETE.toString())) {
+            } else if (command.equals(CommandCartList.DELETE.toString())) {
                 try {
-                    cart.removeProductInTheCart(checkId(strings[1], maxId));
-                    System.out.println("Товар удален из корзины");
+                    long id = Long.parseLong(strings[1]);
+                    cart.removeProductInTheCart(id);
                 } catch (NumberFormatException ignored) {
+                    System.out.println("id не найден. Проверьте Ваш запрос");
                 }
-            } else if (strings[0].toUpperCase().equals(CommandCartList.SHOW.toString())) {
+            } else if (command.equals(CommandCartList.SHOW.toString())) {
                 cart.printCart();
             } else {
                 System.out.println("Команда не распознана. Повторите Ваш запрос. Для выхода введите \"exit\".");
@@ -55,19 +57,5 @@ public class UserApplication {
 //        cart2.printCart();
 
         context.close();
-    }
-
-    private static long checkId(String str, long maxId) throws NumberFormatException {
-        long id = 0;
-        try {
-            id = Long.parseLong(str);
-            if (id < 1 || id > maxId) {
-                throw new NumberFormatException();
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("id не найден. Проверьте Ваш запрос");
-            throw new NumberFormatException();
-        }
-        return id;
     }
 }

@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.geekbrains.spring.boot.entities.Product;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class ProductRepository {
@@ -28,13 +25,14 @@ public class ProductRepository {
         return Collections.unmodifiableList(products);
     }
 
-    public Product findProductById(Long id) throws IllegalArgumentException {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                return product;
+    public Optional<Product> findProductById(Long id) throws IllegalArgumentException {
+        Optional<Product> product = Optional.empty();
+        for (Product p : products) {
+            if (p.getId().equals(id)) {
+                product = Optional.of(p);
             }
         }
-        throw new IllegalArgumentException("Product not found");
+        return product;
     }
 
     public void addProduct(Product product) {
@@ -43,11 +41,5 @@ public class ProductRepository {
 
     public void deleteProductById(Long id) {
         products.removeIf(p -> p.getId().equals(id));
-//        for (Product product : products) {
-//            if (product.getId().equals(id)) {
-//                products.remove(product);
-//                return;
-//            }
-//        }
     }
 }

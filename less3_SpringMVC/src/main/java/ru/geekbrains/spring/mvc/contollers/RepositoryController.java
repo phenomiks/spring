@@ -10,7 +10,7 @@ import ru.geekbrains.spring.mvc.ProductRepository;
 @Controller
 @RequestMapping("/repository")
 public class RepositoryController {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public RepositoryController(ProductRepository productRepository) {

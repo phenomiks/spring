@@ -6,6 +6,7 @@ import ru.geekbrains.spring.boot.entities.Product;
 import ru.geekbrains.spring.boot.repositories.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -20,8 +21,9 @@ public class ProductService {
         return productRepository.findAllProducts();
     }
 
-    public Product findProductById(Long id) {
-        return productRepository.findProductById(id);
+    public Optional<Product> findProductById(Long id) {
+        Optional<Product> product = productRepository.findProductById(id);
+        return product;
     }
 
     public void addProduct(Product product) {
